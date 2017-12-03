@@ -14,7 +14,7 @@ def data_load():
 	 # use pandas to read csv file
     training_total=pd.read_csv('C:\\Users\zmx\\Desktop\\CS 513\\project\\train.csv')
     training_label=pd.DataFrame(training_total['label'])
-    training_data=pd.DataFrame(training_total.ix[:,1:])
+    training_data=pd.DataFrame(training_total.iloc[:,1:])
     testing_data=pd.read_csv('C:\\Users\\zmx\\Desktop\\CS 513\\project\\test.csv')
 
     # dataframe normalization
@@ -22,8 +22,8 @@ def data_load():
     m,n=training_data.shape  # dataframe is too big, use for-loop to normalize the training data to avoid overflow
     for i in range(m):
         for j in range(n):
-            if training_data.ix[i, j] != 0:
-                training_data.ix[i, j] = 1
+            if training_data.iloc[i, j] != 0:
+                training_data.iloc[i, j] = 1
     return training_data,training_label,testing_data
 
 # use sklearn to classify
