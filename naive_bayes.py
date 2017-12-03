@@ -19,8 +19,7 @@ def data_load():
 
     # dataframe normalization
     testing_data[testing_data!=0]=1
-	
-	m, n = training_data.shape  # dataframe is too big, use for-loop to normalize the training data to avoid overflow
+    m,n=training_data.shape  # dataframe is too big, use for-loop to normalize the training data to avoid overflow
     for i in range(m):
         for j in range(n):
             if training_data.ix[i, j] != 0:
