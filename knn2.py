@@ -16,34 +16,31 @@ sys.stderr = stderr
 
 
 
-def opencsv():#使用pandas打开      
-    data = pd.read_csv('train.csv')      
-    data1=pd.read_csv('test.csv')
-    train_data = data.values[0:,1:]#读入全部训练数据
-    train_label = data.values[0:,0]#读入标签
-    test_data=data1.values[0:,0:]#测试全部测试个数据
+def opencsv():#use pandas to read csv file    
+    data_train = pd.read_csv('train.csv')      
+    data_test=pd.read_csv('test.csv')
+    train_data = data_train.values[0:,1:]#Read all train data
+    train_label = data_train.values[0:,0]#Read label
+    test_data=data_test.values[0:,0:]#Read test data
     return train_data,train_label,test_data
 
 
-def nomalizing(array):#归一化数据
-             m,n=np.shape(array)
-             for i in range(m):
-                  for j in range(n):
-                       if array[i,j]!=0:#每一行的每一列进行检测，如果非零则置为1
+def nomalizing(array):#dataframe normalization
+             x,y=np.shape(array)
+             for i in range(x):
+                  for j in range(y):
+                       if array[i,j]!=0:#Test each column of each row, if the gray scale value is not zero, then set it as 1.
                           array[i,j]=1
              return array
 def knnClassify(trainData,trainLabel,testData):
-              knnClf=KNeighborsClassifier(10)#k=5   KNN中邻值为5，
-              knnClf.fit(trainData,np.ravel(trainLabel))#ravel->降维数组.Fit the model using X as training data and y as target values
+              knnClf=KNeighborsClassifier(10)#In default k = 5
+              knnClf.fit(trainData,np.ravel(trainLabel))#Bulid a model
               testLabel=knnClf.predict(testData)#Predict the class labels for the provided data
-              np.savetxt('sklearn_knn10_Result.csv', testLabel, delimiter=',')
+              np.savetxt('sklearn_knn_Result.csv', testLabel, delimiter=',')
 
 if __name__ == "__main__":
     train_data,train_label,test_data=opencsv()
     trainData=nomalizing(train_data)
     testData=nomalizing(test_data)
     knnClassify(trainData,train_label,testData)
-    
-#    print(shape(train_data))
-#    print(shape(train_label))
-#    print(shape(test_data))
+
