@@ -17,11 +17,11 @@ sys.stderr = stderr
 
 
 def opencsv():#use pandas to read csv file    
-    data_train = pd.read_csv('train.csv')      
-    data_test=pd.read_csv('test.csv')
-    train_data = data_train.values[0:,1:]#Read all train data
-    train_label = data_train.values[0:,0]#Read label
-    test_data=data_test.values[0:,0:]#Read test data
+    rawtrain = pd.read_csv('train.csv')      
+    rawtest=pd.read_csv('test.csv')
+    train_data = rawtrain.values[0:,1:]#Read all train data
+    train_label = rawtrain.values[0:,0]#Read label
+    test_data=rawtest.values[0:,0:]#Read test data
     return train_data,train_label,test_data
 
 
