@@ -14,6 +14,7 @@ def data_load():
 	 # use pandas to read csv file
     training_total=pd.read_csv('C:\\Users\zmx\\Desktop\\CS 513\\project\\train.csv')
     training_label=pd.DataFrame(training_total['label'])
+    # training data is the data in train.csv except the first column
     training_data=pd.DataFrame(training_total.iloc[:,1:])
     testing_data=pd.read_csv('C:\\Users\\zmx\\Desktop\\CS 513\\project\\test.csv')
 
@@ -28,9 +29,12 @@ def data_load():
 
 # use sklearn to classify
 def bayes_classify(training_data,training_label,testing_data):
-    bayes_clf = naive_bayes.MultinomialNB() #set functions and parameters
-    bayes_clf.fit(training_data,training_label.values.ravel()) # train the training data
-    bayes_result=bayes_clf.predict(testing_data) #predict the testing data
+    #set functions and parameters
+    bayes_clf = naive_bayes.MultinomialNB()
+    # train the training data, use values.ravel() to convert 2D array into 1D
+    bayes_clf.fit(training_data,training_label.values.ravel())
+    #predict the testing data
+    bayes_result=bayes_clf.predict(testing_data) 
     return bayes_result
 
 if __name__=='__main__':
@@ -42,6 +46,7 @@ if __name__=='__main__':
 
     # convert the result into dataframe
     result={}
+    # np.arange distribute the values evenly, m=42000, which is the number of rows(digits)
     Image_ID=np.arange(m)+1
     result['Label']=result_labels
     result_frame=pd.DataFrame(result,index=Image_ID)
