@@ -4,54 +4,50 @@ Created on Tue Nov 21 17:03:46 2017
 
 @author: zmx
 """
-import pandas as pd
+#import the libraries
 import numpy as np
+import pandas as pd
 import time
 from sklearn import naive_bayes
 
 def data_load():
-
-    # use pandas to read csv file
-    train_ttl=pd.read_csv('C:\Users\zmx\Desktop\CS 513\project\\train.csv')
-    train_label=pd.DataFrame(train_ttl['label'])
-    train_data=pd.DataFrame(train_ttl.ix[:,1:])
-    test_data=pd.read_csv('C:\Users\zmx\Desktop\CS 513\project\\test.csv')
+	 # use pandas to read csv file
+    training_total=pd.read_csv('C:\\Users\zmx\\Desktop\\CS 513\\project\\train.csv')
+    training_label=pd.DataFrame(training_total['label'])
+    training_data=pd.DataFrame(training_total.ix[:,1:])
+    testing_data=pd.read_csv('C:\\Users\\zmx\\Desktop\\CS 513\\project\\test.csv')
 
     # dataframe normalization
-    test_data[test_data!=0]=1
-
-    # train_data[train_data!=0]=1
-    m,n=train_data.shape #data frame too big, use for loop
+    testing_data[testing_data!=0]=1
+	
+	m, n = training_data.shape  # dataframe is too big, use for-loop to normalize the training data to avoid overflow
     for i in range(m):
         for j in range(n):
-            if train_data.ix[i,j]!=0:
-                train_data.ix[i,j]=1
-
-    return train_data,train_label,test_data
+            if training_data.ix[i, j] != 0:
+                training_data.ix[i, j] = 1
+    return training_data,training_label,testing_data
 
 # use sklearn to classify
-def bayes_classify(traindata,trainlabel,testdata):
-
-    bayes_clf = naive_bayes.MultinomialNB() #set function and parameters
-    bayes_clf.fit(traindata,trainlabel.values.ravel())#train the data
-    bayes_result=bayes_clf.predict(testdata) #predict the test data
-
+def bayes_classify(training_data,training_label,testing_data):
+    bayes_clf = naive_bayes.MultinomialNB() #set functions and parameters
+    bayes_clf.fit(training_data,training_label.values.ravel()) # train the training data
+    bayes_result=bayes_clf.predict(testing_data) #predict the testing data
     return bayes_result
 
 if __name__=='__main__':
-    start = time.clock()
-    traindata,trainlabel,testdata=data_load() #load raw data
+    start = time.clock() # get start time
+    training_data,training_label,testing_data=data_load() #load the raw data
 
-    m,n=testdata.shape
-    result_labels=bayes_classify(traindata,trainlabel,testdata)
+    m,n=testing_data.shape
+    result_labels=bayes_classify(training_data,training_label,testing_data)
 
-    #put result as dataframe
+    # convert the result into dataframe
     result={}
-    ImageId=np.arange(m)+1
+    Image_ID=np.arange(m)+1
     result['Label']=result_labels
-    result_frame=pd.DataFrame(result,index=ImageId)
+    result_frame=pd.DataFrame(result,index=Image_ID)
 
-    # write result to csv
-    result_frame.to_csv('C:\Users\zmx\Desktop\CS 513\project\\result_bayes.csv')
-    end = time.clock()
-    print('Total time:', (end - start)/3600.0)
+    # write the result dataframe to a csv file
+    result_frame.to_csv('C:\\Users\\zmx\\Desktop\\CS 513\\project\\result_bayes.csv')
+    end = time.clock() # get end time
+    print('Total time:', (end - start)/3600.0) # 1.2 hours
