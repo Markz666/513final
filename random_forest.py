@@ -39,7 +39,7 @@ def data_load():
 # use sklearn library，classify the testing set
 def rf_classify(training_data,training_label,testing_data):
     # set functions and parameters
-    rf_clf = RandomForestClassifier()
+    rf_clf = RandomForestClassifier(criterion="gini",max_depth=32, max_features=784)
     # train the training data, use values.ravel() to convert 2D array into 1D
     rf_clf.fit(training_data,training_label.values.ravel())
     # predict the testing data
