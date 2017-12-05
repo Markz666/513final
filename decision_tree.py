@@ -9,14 +9,22 @@ import numpy as np
 import pandas as pd
 import time
 from sklearn import tree
+from sklearn import metrics
+from sklearn import cross_validation
+import matplotlib.pyplot as plt
+import StringIO
+import pydot
+import os
+os.environ["PATH"] += os.pathsep + 'C:/Program Files (x86)/Graphviz2.38/bin/'
+
 
 def data_load():
 	 # use pandas to read csv file
-    training_total=pd.read_csv('C:\\Users\zmx\\Desktop\\CS 513\\project\\train.csv')
+    training_total=pd.read_csv('train.csv')
     training_label=pd.DataFrame(training_total['label'])
     # training data is the data in train.csv except the first column
     training_data=pd.DataFrame(training_total.iloc[:,1:])
-    testing_data=pd.read_csv('C:\\Users\\zmx\\Desktop\\CS 513\\project\\test.csv')
+    testing_data=pd.read_csv('test.csv')
 
     # dataframe normalization
     testing_data[testing_data!=0]=1
@@ -29,11 +37,17 @@ def data_load():
 
 def decision_tree(training_data,training_label,testing_data):
     # use gini criterion, 32 max depth, and 784 features to construct decision tree classifier
-    dt_clf = tree.DecisionTreeClassifier(criterion="gini", max_depth=32, max_features=784)
+    dt_clf = tree.DecisionTreeClassifier(criterion="gini", max_depth=5, max_features=784)
     # train the training data, use values.ravel() to convert 2D array into 1D
     dt_clf.fit(training_data,training_label.values.ravel())
     # predict the testing data
     dt_result=dt_clf.predict(testing_data) 
+    
+    # Decision Tree as output -> decision_tree.png
+    dot_data = StringIO.StringIO()
+    tree.export_graphviz(dt_clf, out_file=dot_data)
+    graph = pydot.graph_from_dot_data(dot_data.getvalue())
+    graph[0].write_png('decision_tree.png')
     return dt_result
 
 if __name__=='__main__':
@@ -51,6 +65,6 @@ if __name__=='__main__':
     result_frame=pd.DataFrame(result,index=Image_ID)
 
     # write the result dataframe to a csv file
-    result_frame.to_csv('C:\\Users\\zmx\\Desktop\\CS 513\\project\\result_dt.csv')
+    result_frame.to_csv('result_dt.csv')
     end = time.clock() # get end time
     print('Total time:', (end - start) / 60) # 20 minutes 
