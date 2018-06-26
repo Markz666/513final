@@ -14,7 +14,7 @@ test_raw=pd.read_csv("C:\\Users\\zhang\\Desktop\\513data\\test.csv",header=0)
 train = train_raw.values
 test = test_raw.values
 
-print ('Start PCA reduce the dimision to 50')
+print ('Start PCA, reduce the dimension to 50')
 train_x=train[0::,1::]
 train_label=train[::,0]
 pca = RandomizedPCA(n_components=50, whiten=True).fit(train_x)
@@ -41,7 +41,7 @@ b_predict=rbf_svc.predict(b_train)
 
 
 score=accuracy_score(b_label,b_predict)
-print ("The accruacy socre is ", score)
+print ("The accruacy socre is : ", score)
 
 print ('Start writing!')
 
